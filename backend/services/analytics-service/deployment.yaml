@@ -10,7 +10,7 @@ spec:
   replicas: 1
   selector: 
     matchLabels:
-      app: analytics-serice
+      app: analytics-service
   strategy:
     type: rollingUpdate
     maxSurge: 1
