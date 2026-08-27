@@ -13,8 +13,6 @@ resources:
 
   - configmap.yaml 
 
-  - namespace.yaml 
-
   - externalSecret.yaml
 
 commonLabels:
