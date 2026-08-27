@@ -5,30 +5,31 @@ metadata:
   namespace: rishop
   labels:
     app.kubernetes.io/name: analytics-service
-    app.kubernetes.io/part-of: argocd
-spec: 
+    app.kubernetes.io/part-of: rishop
+spec:
   replicas: 1
-  selector: 
+  selector:
     matchLabels:
       app: analytics-service
   strategy:
-    type: rollingUpdate
-    maxSurge: 1
-    maxUnavailable: 0
-  revisionHistoryLimit: 2 
-  template: 
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  revisionHistoryLimit: 2
+  minReadySeconds: 5
+  template:
     metadata:
-      labels: 
+      labels:
         app: analytics-service
-        app.kubernetes.io/name: analytics-service 
-        app.kubernetes.io/part-of: argocd
-    spec: 
+        app.kubernetes.io/name: analytics-service
+        app.kubernetes.io/part-of: rishop
+    spec:
       securityContext:
         runAsNonRoot: true
-        runAsUser: 1000 
+        runAsUser: 1000
         fsGroup: 2000
       terminationGracePeriodSeconds: 15
-      minReadySeconds: 5
       imagePullSecrets:
         - name: ghcr-registry-secret
       containers: 
@@ -39,11 +40,11 @@ spec:
               containerPort: 50055
             - name: http
               containerPort: 8084
-          envFrom: 
-            - configMapRef: 
-              name: rishop-backend-config
-            - secretRef: 
-              name: rishop-backend-secret
+          envFrom:
+            - configMapRef:
+                name: rishop-backend-config
+            - secretRef:
+                name: rishop-backend-secret
           env:
             - name: GRPC_PORT 
               value: "50055" 
