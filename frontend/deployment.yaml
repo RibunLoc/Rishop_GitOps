@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend-deployment
+  namespace: rishop
+  labels:
+    app.kubernetes.io/name: frontend-deployment
+    app.kubernetes.io/part-of: rishop
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontend-deployment
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  revisionHistoryLimit: 2
+  template:
+    metadata:
+      labels:
+        app: frontend-deployment
+        app.kubernetes.io/name: frontend-deployment
+        app.kubernetes.io/part-of: rishop
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        fsGroup: 2000
+      terminationGracePeriodSeconds: 10
+      imagePullSecrets:
+        - name: ghcr-registry-secret
+      containers:
+        - name: frontend
+          image: ghcr.io/ribunloc/rishop_frontend:sha-e92c29b
+          ports:
+            - name: http
+              containerPort: 3000
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "50m"
+            limits:
+              memory: "128Mi"
+              cpu: "200m"

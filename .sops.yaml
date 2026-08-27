@@ -1,0 +1,5 @@
+creation_rules:
+  # Chỉ áp dụng cho file trong lab/ để không ảnh hưởng luồng ESO đang chạy
+  - path_regex: ^lab/.*\.yaml$
+    kms: arn:aws:kms:ap-southeast-1:758497006160:key/1b177727-62ca-4e21-9b9f-9e2b7061c91c
+    encrypted_regex: ^(data|stringData)$

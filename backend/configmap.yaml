@@ -1,0 +1,83 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: rishop-backend-config
+  namespace: rishop
+data:
+  # ── PostgreSQL ──
+  POSTGRES_HOST: "platform-db-rw.postgres.svc.cluster.local"
+  POSTGRES_PORT: "5432"
+  POSTGRES_USER: "app"
+  POSTGRES_SSLMODE: "disable"
+
+  # ── PostgreSQL Read Replica ──
+  POSTGRES_READ_HOST: "platform-db-ro.postgres.svc.cluster.local"
+  POSTGRES_READ_PORT: "5432"
+
+  # Database names per service (phải khớp với postgresql CR)
+  AUTH_POSTGRES_DB: "auth_db"
+  PRODUCT_POSTGRES_DB: "product_db"
+  ORDER_POSTGRES_DB: "order_db"
+  CART_POSTGRES_DB: "cart_db"
+  ANALYTICS_POSTGRES_DB: "analytics_db"
+
+  # ── Redis ──
+  REDIS_ADDR: "valkey.redis.svc.cluster.local:6379"
+  REDIS_TLS_ENABLED: "false"
+  AUTH_REDIS_DB: "0"
+  ORDER_REDIS_DB: "1"
+  PRODUCT_REDIS_DB: "2"
+  CART_REDIS_DB: "3"
+  ANALYTICS_REDIS_DB: "4"
+
+  # ── Kafka ──
+  KAFKA_BROKERS: "kafka-kafka-bootstrap.messaging.svc.cluster.local:9092"
+  KAFKA_TOPIC: "events"
+  KAFKA_PRODUCT_TOPIC: "product.events"
+
+  # ── gRPC internal addresses ──
+  AUTH_GRPC_ADDR: "auth-service.rishop.svc.cluster.local:50052"
+  PRODUCT_GRPC_ADDR: "product-service.rishop.svc.cluster.local:50053"
+  ORDER_GRPC_ADDR: "order-service.rishop.svc.cluster.local:50051"
+  CART_GRPC_ADDR: "cart-service.rishop.svc.cluster.local:50054"
+  ANALYTICS_GRPC_ADDR: "analytics-service.rishop.svc.cluster.local:50055"
+
+  # ── Service ports ──
+  GATEWAY_PORT: "9090"
+  AUTH_GRPC_PORT: "50052"
+  AUTH_HTTP_PORT: "8081"
+  PRODUCT_GRPC_PORT: "50053"
+  PRODUCT_HTTP_PORT: "8082"
+  ORDER_GRPC_PORT: "50051"
+  ORDER_HTTP_PORT: "8080"
+  CART_GRPC_PORT: "50054"
+  CART_HTTP_PORT: "8083"
+  ANALYTICS_GRPC_PORT: "50055"
+  ANALYTICS_HTTP_PORT: "8084"
+
+  # ── S3 (non-secret) ──
+  S3_BUCKET: "rishop-storage-web"
+  S3_REGION: "ap-southeast-1"
+  S3_ENDPOINT: "https://rishop-storage-web.s3.ap-southeast-1.amazonaws.com"
+  S3_PUBLIC_BASE_URL: "https://rishop-storage-web.s3.ap-southeast-1.amazonaws.com"
+  CDN_BASE_URL: "d21dxgfr1mgdxp.cloudfront.net"
+  
+  # ── COGNITO (non-secret) ──
+  COGNITO_USER_POOL_ID: "ap-southeast-1_gDUFRl4T8"
+  COGNITO_CLIENT_ID: "5c9i6baumrev0j8k43fhuoeeqv"
+  COGNITO_REGION: "ap-southeast-1"
+  
+  # ── GHN - SHIP ──
+  GHN_SHOP_ID: "208659"
+  GHN_BASE_URL: "https://dev-online-gateway.ghn.vn"
+
+  # ── Misc ──
+  CACHE_TTL_SECONDS: "120"
+  RATE_LIMIT_REQUESTS: "100"
+  RATE_LIMIT_WINDOW_SECONDS: "60"
+  ACCESS_TOKEN_TTL: "24h"
+  CORS_ALLOWED_ORIGINS: "https://rishop.holoc.id.vn"
+
+  # Sentry
+  SENTRY_ENVIRONMENT: "kubernetes"
+  SENTRY_TRACES_SAMPLE_RATE: "0.2"

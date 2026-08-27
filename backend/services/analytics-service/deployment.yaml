@@ -1,0 +1,82 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: analytics-service
+  namespace: rishop
+  labels:
+    app.kubernetes.io/name: analytics-service
+    app.kubernetes.io/part-of: argocd
+spec: 
+  replicas: 1
+  selector: 
+    matchLabels:
+      app: analytics-serice
+  strategy:
+    type: rollingUpdate
+    maxSurge: 1
+    maxUnavailable: 0
+  revisionHistoryLimit: 2 
+  template: 
+    metadata:
+      labels: 
+        app: analytics-service
+        app.kubernetes.io/name: analytics-service 
+        app.kubernetes.io/part-of: argocd
+    spec: 
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000 
+        fsGroup: 2000
+      terminationGracePeriodSeconds: 15
+      minReadySeconds: 5
+      imagePullSecrets:
+        - name: ghcr-registry-secret
+      containers: 
+        - name: analytics-service
+          image: ghcr.io/ribunloc/rishop-analytics-service:4847199
+          ports:
+            - name: grpc
+              containerPort: 50055
+            - name: http
+              containerPort: 8084
+          envFrom: 
+            - configMapRef: 
+              name: rishop-backend-config
+            - secretRef: 
+              name: rishop-backend-secret
+          env:
+            - name: GRPC_PORT 
+              value: "50055" 
+            - name: HTTP_PORT
+              value: "8084"
+            - name: POSTGRES_DB 
+              valueFrom: 
+                configMapKeyRef:
+                  name: rishop-backend-config
+                  key: ANALYTICS_POSTGRES_DB
+            - name: REDIS_DB
+              valueFrom: 
+                configMapKeyRef:
+                  name: rishop-backend-config
+                  key: ANALYTICS_REDIS_DB
+          readinessProbe: 
+            httpGet: 
+              path: /healthz
+              port: 8084
+            initialDelaySeconds: 8
+            periodSeconds: 12
+            timeoutSeconds: 4
+          livenessProbe: 
+            httpGet: 
+              path: /healthz
+              port: 8084
+            initialDelaySeconds: 12
+            periodSeconds: 16
+            timeoutSeconds: 4
+          resources:
+            requests:
+              memory: "32Mi"
+              cpu: "25m"
+            limits:
+              memory: "64Mi"
+              cpu: "100m"

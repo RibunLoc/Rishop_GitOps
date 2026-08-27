@@ -1,1 +1,12 @@
 go.mod
+secrets.yaml
+config.yaml
+clusterSecretStore.yaml
+metadata.json
+.venv
+
+# SOPS lab — chưa mã hoá thì đừng commit.
+# File đã mã hoá đặt tên *.enc.yaml để phân biệt rõ.
+lab/*.yaml
+!lab/*.enc.yaml
+!lab/README.md

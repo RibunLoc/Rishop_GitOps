@@ -1,0 +1,66 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: rishop-ingress
+  namespace: rishop
+  labels:
+    app.kubernetes.io/name: rishop-ingress
+    app.kubernetes.io/part-of: rishop
+  annotations:
+    external-dns: "enabled"
+    external-dns.alpha.kubernetes.io/hostname: "rishop.holoc.id.vn"
+    external-dns.alpha.kubernetes.io/ttl: "120"
+    external-dns.alpha.kubernetes.io/cloudflare-proxied: "true"
+    external-dns.alpha.kubernetes.io/target:  "27.78.14.179"
+
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/limit-rps: "30"
+    nginx.ingress.kubernetes.io/limit-connections: "20"
+
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - rishop.holoc.id.vn
+      secretName: tls-rishop-letsencrypt
+  rules:
+    - host: rishop.holoc.id.vn
+      http:
+        paths:
+          - path: /api/auth/cognito-exchange
+            pathType: Exact
+            backend:
+              service: 
+                name: frontend-service
+                port:
+                  number: 80
+          - path: /api
+            pathType: Prefix
+            backend:
+              service:
+                name: api-gateway-service
+                port:
+                  number: 9090
+          - path: /healthz
+            pathType: Exact
+            backend: 
+              service:
+                name: api-gateway-service
+                port:
+                  number: 9090
+          - path: /swagger
+            pathType: Prefix
+            backend: 
+              service: 
+                name: api-gateway-service
+                port:
+                  number: 9090
+          - path: /
+            pathType: Prefix
+            backend:
+              service: 
+                name: frontend-service
+                port: 
+                  number: 80

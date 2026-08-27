@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: cart-service
+  namespace: rishop
+  labels:
+    app.kubernetes.io/name: cart-service
+    app.kubernetes.io/part-of: rishop
+spec:
+  type: ClusterIP
+  selector:
+    app: cart-service
+  ports:
+    - name: grpc
+      protocol: TCP
+      port: 50054
+      targetPort: 50054
+    - name: http
+      protocol: TCP
+      port: 8083
+      targetPort: 8083

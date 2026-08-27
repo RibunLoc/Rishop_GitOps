@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: order-service
+  namespace: rishop
+  labels:
+    app.kubernetes.io/name: order-service
+    app.kubernetes.io/part-of: rishop
+spec:
+  type: ClusterIP
+  selector:
+    app: order-service
+  ports:
+    - name: grpc
+      protocol: TCP
+      port: 50051
+      targetPort: 50051
+    - name: http
+      protocol: TCP
+      port: 8080
+      targetPort: 8080

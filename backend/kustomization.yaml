@@ -1,0 +1,22 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: rishop
+
+resources:
+
+  - services/api-gateway
+  - services/auth-service
+  - services/product-service
+  - services/order-service
+  - services/cart-service
+  - services/analytics-service
+
+  - configmap.yaml 
+
+  - namespace.yaml 
+
+  - externalSecret.yaml
+
+commonLabels:
+  app.kubernetes.io/part-of: rishop
+  app.kubernetes.io/managed-by: kustomize
