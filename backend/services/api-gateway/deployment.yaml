@@ -29,7 +29,7 @@ spec:
         runAsUser: 1000
         fsGroup: 2000
       terminationGracePeriodSeconds: 15
-      minReadySeconds: 3
+      minReadySeconds: 4
       imagePullSecrets:
         - name: ghcr-registry-secret
       containers:

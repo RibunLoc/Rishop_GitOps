@@ -73,7 +73,7 @@ spec:
               port: 8084
             initialDelaySeconds: 12
             periodSeconds: 16
-            timeoutSeconds: 4
+            timeoutSeconds: 5
           resources:
             requests:
               memory: "32Mi"
