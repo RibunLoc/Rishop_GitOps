@@ -17,6 +17,7 @@ spec:
       maxSurge: 1
       maxUnavailable: 0
   revisionHistoryLimit: 3
+  minReadySeconds: 4
   template:
     metadata:
       labels:
@@ -29,12 +30,11 @@ spec:
         runAsUser: 1000
         fsGroup: 2000
       terminationGracePeriodSeconds: 15
-      minReadySeconds: 4
       imagePullSecrets:
         - name: ghcr-registry-secret
       containers:
         - name: api-gateway
-          image: ghcr.io/ribunloc/rishop-api-gateway:4847199
+          image: ghcr.io/ribunloc/rishop-api-gateway:3beb398
           ports:
             - name: http
               containerPort: 9090

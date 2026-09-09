@@ -42,7 +42,7 @@ spec:
         - name: ghcr-registry-secret
       containers:
         - name: order-service
-          image: ghcr.io/ribunloc/rishop-order-service:4847199
+          image: ghcr.io/ribunloc/rishop-order-service:3beb398
           ports:
             - name: grpc
               containerPort: 50051
