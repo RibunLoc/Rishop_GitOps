@@ -24,6 +24,15 @@ spec:
         app.kubernetes.io/name: frontend-deployment
         app.kubernetes.io/part-of: rishop
     spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoreDuringExcution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                - key: kubernetes.io/hostname
+                operator: In
+                values: 
+                  - thanhloc
       securityContext:
         runAsNonRoot: true
         runAsUser: 1000
