@@ -43,7 +43,7 @@ spec:
         - name: ghcr-registry-secret
       containers:
         - name: api-gateway
-          image: ghcr.io/ribunloc/rishop-api-gateway:7d558fa
+          image: ghcr.io/ribunloc/rishop-api-gateway:812a93c
           ports:
             - name: http
               containerPort: 9090

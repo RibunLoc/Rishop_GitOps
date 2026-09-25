@@ -43,7 +43,7 @@ spec:
         - name: ghcr-registry-secret
       containers:
         - name: product-service
-          image: ghcr.io/ribunloc/rishop-product-service:7d558fa
+          image: ghcr.io/ribunloc/rishop-product-service:812a93c
           ports:
             - name: grpc
               containerPort: 50053

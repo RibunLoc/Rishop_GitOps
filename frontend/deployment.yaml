@@ -43,7 +43,7 @@ spec:
         - name: ghcr-registry-secret
       containers:
         - name: frontend
-          image: ghcr.io/ribunloc/rishop_frontend:sha-e2a0f93
+          image: ghcr.io/ribunloc/rishop_frontend:sha-927c882
           ports:
             - name: http
               containerPort: 3000
